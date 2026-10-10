@@ -1,7 +1,7 @@
-// Lógica de interacción para la App RutaAssist
-
 document.addEventListener('DOMContentLoaded', () => {
-  const btnSos = document.getElementById('btn-sos');
+  const btnOpenSos = document.getElementById('btn-open-sos');
+  const btnCloseSos = document.getElementById('btn-close-sos');
+  const modalSos = document.getElementById('modal-sos');
   const btnDucha = document.getElementById('btn-ducha');
   const btnComida = document.getElementById('btn-comida');
   const chatForm = document.getElementById('chat-form');
@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatBox = document.getElementById('chat-box');
   const notification = document.getElementById('notification');
 
-  function notificar(mensaje) {
+  // Función Global para Notificaciones Toast
+  window.notificar = function(mensaje) {
+    if (!notification) return;
     notification.innerText = mensaje;
     notification.classList.remove('hidden');
     notification.classList.add('notif-active');
@@ -17,27 +19,60 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       notification.classList.add('hidden');
       notification.classList.remove('notif-active');
-    }, 3500);
-  }
+    }, 4000);
+  };
 
-  // EVENTO CON ANIMACIÓN DE CAMIÓN (8 SEGUNDOS)
-  if (btnSos) {
-    btnSos.addEventListener('click', () => {
-      // Evitamos disparar múltiples animaciones simultáneas
-      if (btnSos.classList.contains('is-animating')) return;
+  // NAVEGACIÓN ENTRE PANTALLAS (TABS)
+  window.cambiarSeccion = function(idSeccion) {
+    document.querySelectorAll('.section-view').forEach(sec => sec.classList.add('hidden'));
 
-      btnSos.classList.add('is-animating');
-      notificar('🚛 Procesando solicitud de auxilio... El camión de asistencia está en camino.');
+    const seccionActiva = document.getElementById(idSeccion);
+    if (seccionActiva) {
+      seccionActiva.classList.remove('hidden');
+    }
 
-      // Retiramos la clase al finalizar los 8s para poder reiniciarla después
-      setTimeout(() => {
-        btnSos.classList.remove('is-animating');
-        notificar('✅ ¡Grúa/Auxilio asignado con éxito!');
-      }, 8000);
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.remove('text-orange-600', 'font-bold');
+      btn.classList.add('text-gray-400');
+    });
+
+    const btnNavActivo = document.getElementById(`nav-${idSeccion}`);
+    if (btnNavActivo) {
+      btnNavActivo.classList.remove('text-gray-400');
+      btnNavActivo.classList.add('text-orange-600', 'font-bold');
+    }
+  };
+
+  // CONTROL DEL MODAL DE SOS
+  if (btnOpenSos && modalSos) {
+    btnOpenSos.addEventListener('click', () => {
+      modalSos.classList.remove('hidden');
     });
   }
 
-  // Resto de listeners...
+  if (btnCloseSos && modalSos) {
+    btnCloseSos.addEventListener('click', () => {
+      modalSos.classList.add('hidden');
+    });
+  }
+
+  // CONFIRMACIÓN Y DISPARO DE EMERGENCIA
+  window.confirmarAuxilio = function(tipo, icono, detalle) {
+    modalSos.classList.add('hidden');
+
+    if (btnOpenSos && !btnOpenSos.classList.contains('is-animating')) {
+      btnOpenSos.classList.add('is-animating');
+
+      notificar(`🚨 Solicitando auxilio: ${tipo}... Enviando coordenadas GPS.`);
+
+      setTimeout(() => {
+        btnOpenSos.classList.remove('is-animating');
+        notificar(`${icono} ${tipo} Asignado: ${detalle}`);
+      }, 8000);
+    }
+  };
+
+  // ACCIONES RÁPIDAS
   if (btnDucha) {
     btnDucha.addEventListener('click', () => {
       notificar('🚿 Ducha reservada en Parador YPF El Cruce - Turno: 20:30 hs.');
@@ -50,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // CHAT EN TIEMPO REAL CON LA BASE
   if (chatForm) {
     chatForm.addEventListener('submit', (e) => {
       e.preventDefault();
