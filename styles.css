@@ -1,0 +1,109 @@
+/* Custom Styles y Ajustes de UX */
+
+/* Personalización del scrollbar del chat */
+#chat-box::-webkit-scrollbar {
+  width: 4px;
+}
+
+#chat-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+/* Animación de Notificación Toast */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.notif-active {
+  animation: fadeInDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================
+   ANIMACIÓN DEL CAMIÓN (Order / SOS Button)
+   ========================================== */
+
+.order-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.order-button .truck {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -50px; /* Posición inicial fuera del botón */
+  font-size: 1.4rem;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.order-button .package {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  font-size: 1.1rem;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+}
+
+/* Clases desencadenadas por JavaScript */
+.order-button.is-animating .truck {
+  animation: truck-drive 8s ease forwards;
+}
+
+.order-button.is-animating .package {
+  animation: load-package 8s ease forwards;
+}
+
+.order-button.is-animating .btn-text {
+  opacity: 0.2; /* Atenúa el texto mientras el camión se mueve */
+  transition: opacity 0.3s ease;
+}
+
+/* Keyframes entregados */
+@keyframes truck-drive {
+  0% {
+    left: -50px;
+  }
+  10%, 30% {
+    left: calc(100% - 164px);
+  }
+  40% {
+    left: calc(100% - 104px);
+  }
+  60% {
+    left: calc(100% - 224px);
+  }
+  75%, 100% {
+    left: calc(100% + 50px);
+  }
+}
+
+@keyframes load-package {
+  0%, 35% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  40%, 60% {
+    opacity: 0.5;
+    transform: translateY(-50%) scale(0.7);
+  }
+  65%, 100% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0);
+  }
+}
