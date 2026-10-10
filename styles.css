@@ -1,4 +1,7 @@
-/* Custom Styles y Ajustes de UX para RutaAssist */
+/* Custom Dark Theme Styles para RutaAssist */
+body {
+  font-family: 'Inter', sans-serif;
+}
 
 /* Personalización del scrollbar del chat */
 #chat-box::-webkit-scrollbar {
@@ -10,11 +13,11 @@
 }
 
 #chat-box::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #334155;
   border-radius: 9999px;
 }
 
-/* Animación del Modal SOS */
+/* Animaciones del Modal */
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -47,7 +50,7 @@
 }
 
 /* ==========================================
-   ANIMACIÓN DEL CAMIÓN (Order / SOS Button)
+   ANIMACIÓN DEL CAMIÓN EN EL BOTÓN SOS
    ========================================== */
 
 .order-button {
@@ -60,7 +63,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: -50px; /* Posición inicial fuera del botón */
+  left: -50px;
   font-size: 1.4rem;
   z-index: 10;
   transition: opacity 0.3s ease;
@@ -76,7 +79,6 @@
   transition: opacity 0.3s ease;
 }
 
-/* Clases desencadenadas por JavaScript */
 .order-button.is-animating .truck {
   animation: truck-drive 8s ease forwards;
 }
@@ -90,7 +92,6 @@
   transition: opacity 0.3s ease;
 }
 
-/* Keyframes entregados */
 @keyframes truck-drive {
   0% {
     left: -50px;

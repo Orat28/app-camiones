@@ -9,7 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatBox = document.getElementById('chat-box');
   const notification = document.getElementById('notification');
 
-  // Función Global para Notificaciones Toast
+  // Lógica para cambiar foto de perfil
+  const inputFoto = document.getElementById('input-foto-perfil');
+  const headerImg = document.getElementById('header-avatar-img');
+  const headerInitials = document.getElementById('header-avatar-initials');
+  const profileImg = document.getElementById('profile-avatar-img');
+  const profileInitials = document.getElementById('profile-avatar-initials');
+
+  // Función Notificación Toast
   window.notificar = function(mensaje) {
     if (!notification) return;
     notification.innerText = mensaje;
@@ -22,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 4000);
   };
 
-  // NAVEGACIÓN ENTRE PANTALLAS (TABS)
+  // NAVEGACIÓN ENTRE SECCIONES
   window.cambiarSeccion = function(idSeccion) {
     document.querySelectorAll('.section-view').forEach(sec => sec.classList.add('hidden'));
 
@@ -32,14 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.classList.remove('text-orange-600', 'font-bold');
-      btn.classList.add('text-gray-400');
+      btn.classList.remove('text-orange-500', 'font-bold');
+      btn.classList.add('text-slate-500');
     });
 
     const btnNavActivo = document.getElementById(`nav-${idSeccion}`);
     if (btnNavActivo) {
-      btnNavActivo.classList.remove('text-gray-400');
-      btnNavActivo.classList.add('text-orange-600', 'font-bold');
+      btnNavActivo.classList.remove('text-slate-500');
+      btnNavActivo.classList.add('text-orange-500', 'font-bold');
     }
   };
 
@@ -56,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // CONFIRMACIÓN Y DISPARO DE EMERGENCIA
+  // CONFIRMACIÓN DE EMERGENCIA
   window.confirmarAuxilio = function(tipo, icono, detalle) {
     modalSos.classList.add('hidden');
 
@@ -85,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // CHAT EN TIEMPO REAL CON LA BASE
+  // CHAT EN TIEMPO REAL
   if (chatForm) {
     chatForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -93,12 +100,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (texto !== '') {
         const msgDiv = document.createElement('div');
-        msgDiv.className = 'bg-orange-500 text-white p-2.5 rounded-2xl shadow-xs max-w-[85%] ml-auto text-right';
-        msgDiv.innerHTML = `<strong class="block text-[10px] text-orange-100 uppercase font-bold mb-0.5">Chofer</strong>${texto}`;
+        msgDiv.className = 'bg-orange-500 text-slate-950 p-2.5 rounded-xl font-medium max-w-[85%] ml-auto text-right shadow-sm';
+        msgDiv.innerHTML = `<strong class="block text-[10px] text-slate-900 uppercase font-extrabold mb-0.5">Chofer</strong>${texto}`;
 
         chatBox.appendChild(msgDiv);
         chatInput.value = '';
         chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    });
+  }
+
+  // SUBIDA Y PROCESAMIENTO DE FOTO DE PERFIL
+  if (inputFoto) {
+    inputFoto.addEventListener('change', (e) => {
+      const archivo = e.target.files[0];
+
+      if (archivo) {
+        if (!archivo.type.startsWith('image/')) {
+          notificar('❌ Por favor, seleccioná un archivo de imagen válido.');
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+          const imagenUrl = event.target.result;
+
+          if (headerImg && headerInitials) {
+            headerImg.src = imagenUrl;
+            headerImg.classList.remove('hidden');
+            headerInitials.classList.add('hidden');
+          }
+
+          if (profileImg && profileInitials) {
+            profileImg.src = imagenUrl;
+            profileImg.classList.remove('hidden');
+            profileInitials.classList.add('hidden');
+          }
+
+          notificar('📸 ¡Foto de perfil actualizada con éxito!');
+        };
+
+        reader.readAsDataURL(archivo);
       }
     });
   }
