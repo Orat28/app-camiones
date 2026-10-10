@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RutaAssist - Atención al Camionero</title>
+  <!-- Tailwind CSS CDN para estilos rápidos -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Encabezado / Navbar -->
+  <header class="bg-slate-800 border-b border-slate-700 p-4 sticky top-0 z-50 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <span class="text-2xl">🚛</span>
+      <h1 class="text-xl font-bold tracking-wide text-amber-400">RutaAssist</h1>
+    </div>
+    <span class="text-xs bg-slate-700 text-slate-300 px-2.5 py-1 rounded-full border border-slate-600">Estado: En Ruta</span>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="flex-1 p-4 max-w-md mx-auto w-full space-y-6">
+
+    <!-- Tarjeta de Acción Rápida: Botón SOS -->
+    <section class="bg-red-950/40 border border-red-500/50 rounded-2xl p-5 text-center shadow-lg">
+      <h2 class="text-lg font-semibold text-red-400 mb-1">¿Necesitás Auxilio Inmediato?</h2>
+      <p class="text-xs text-red-200/80 mb-4">Gomería, mecánica pesada o grúa con geolocalización.</p>
+      <button onclick="solicitarAuxilio()" class="w-full bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+        <span class="text-xl">⚠️</span> Solicitar Auxilio SOS
+      </button>
+    </section>
+
+    <!-- Módulos de Servicios en Paradores -->
+    <section>
+      <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Servicios en Paradores</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Servicio 1: Duchas -->
+        <button onclick="reservarDucha()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-4 rounded-xl flex flex-col items-center gap-2 text-center transition">
+          <span class="text-3xl">🚿</span>
+          <span class="text-sm font-medium">Reservar Ducha</span>
+          <span class="text-[10px] text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded">3 paradores cerca</span>
+        </button>
+
+        <!-- Servicio 2: Viandas -->
+        <button onclick="pedirComida()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-4 rounded-xl flex flex-col items-center gap-2 text-center transition">
+          <span class="text-3xl">🍔</span>
+          <span class="text-sm font-medium">Encargar Comida</span>
+          <span class="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded">Listo al llegar</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Canal de Atención / Soporte Operativo -->
+    <section class="bg-slate-800 border border-slate-700 rounded-2xl p-4">
+      <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+        <span>💬</span> Soporte Operativo & Dador de Carga
+      </h3>
+      <div id="chat-box" class="bg-slate-900 border border-slate-700/60 rounded-xl p-3 h-32 overflow-y-auto text-xs space-y-2 mb-3">
+        <div class="bg-slate-800 p-2 rounded-lg max-w-[85%] text-slate-300">
+          <strong>Base de Control:</strong> Recordá reportar cualquier demora en la aduana de paso.
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <input id="chat-input" type="text" placeholder="Escribir novedad..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400" />
+        <button onclick="enviarMensaje()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-2 rounded-lg text-xs">
+          Enviar
+        </button>
+      </div>
+    </section>
+
+    <!-- Estado de Turno en Puerto/Depósito -->
+    <section class="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 flex justify-between items-center">
+      <div>
+        <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Turno de Descarga</span>
+        <span class="text-sm font-semibold text-white">Puerto Arayas - Cupo #842</span>
+      </div>
+      <span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-2.5 py-1 rounded-lg border border-emerald-500/30">
+        Confirmado
+      </span>
+    </section>
+
+  </main>
+
+  <!-- Modal / Notificaciones -->
+  <div id="notification" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 px-4 py-3 rounded-xl font-bold text-xs shadow-2xl transition-all"></div>
+
+  <!-- Lógica JavaScript -->
+  <script>
+    function notificar(mensaje) {
+      const modal = document.getElementById('notification');
+      modal.innerText = mensaje;
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.classList.add('hidden'), 3500);
+    }
+
+    function solicitarAuxilio() {
+      notificar("🚨 Auxilio solicitado. Geoposición enviada a la red de grúas cercana.");
+    }
+
+    function reservarDucha() {
+      notificar("🚿 Ducha reservada en Parador YPF El Cruce - Turno: 20:30 hs.");
+    }
+
+    function pedirComida() {
+      notificar("🍔 Pedido enviado. Estará listo en Parador YPF a las 21:00 hs.");
+    }
+
+    function enviarMensaje() {
+      const input = document.getElementById('chat-input');
+      const chatBox = document.getElementById('chat-box');
+      if (input.value.trim() !== '') {
+        const msg = document.createElement('div');
+        msg.className = 'bg-amber-500/20 text-amber-200 border border-amber-500/30 p-2 rounded-lg max-w-[85%] ml-auto text-right';
+        msg.innerHTML = `<strong>Chofer:</strong> ${input.value}`;
+        chatBox.appendChild(msg);
+        input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>
