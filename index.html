@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RutaAssist - Atención al Camionero</title>
-  <!-- Tailwind CSS por CDN para estructura base -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tu hoja de estilos personalizada -->
+  <!-- Hoja de Estilos Personalizada -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="bg-gray-100 text-slate-800 min-h-screen flex flex-col font-sans pb-24 selection:bg-orange-100">
@@ -30,118 +30,290 @@
     </div>
   </header>
 
-  <!-- Contenido Principal -->
+  <!-- Contenedor Principal (Cambio de Secciones) -->
   <main class="flex-1 p-4 max-w-md mx-auto w-full space-y-5">
 
-    <!-- Tarjeta SOS Inmediato con Botón Animado -->
-<section class="bg-gradient-to-br from-red-500 via-orange-500 to-amber-500 rounded-3xl p-5 text-white shadow-lg shadow-orange-500/20 relative overflow-hidden">
-  <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
-  <div class="relative z-10">
-    <div class="flex items-center gap-2 mb-1">
-      <span class="text-lg animate-bounce">🚨</span>
-      <h2 class="text-sm font-bold tracking-wide uppercase text-orange-100">¿Necesitás Auxilio Inmediato?</h2>
+    <!-- SECCIÓN 1: INICIO -->
+    <div id="sec-inicio" class="section-view space-y-5">
+      <!-- Tarjeta SOS Inmediato -->
+      <section class="bg-gradient-to-br from-red-600 via-orange-600 to-amber-500 rounded-3xl p-5 text-white shadow-lg shadow-orange-500/20 relative overflow-hidden">
+        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-1">
+            <div class="flex items-center gap-2">
+              <span class="text-lg animate-bounce">🚨</span>
+              <h2 class="text-sm font-bold tracking-wide uppercase text-orange-100">¿Necesitás Auxilio Inmediato?</h2>
+            </div>
+          </div>
+          <p class="text-xs text-white/90 mb-4 font-normal">Gomería, remolque pesado, asistencia médica o seguridad vial.</p>
+          <button id="btn-open-sos" class="order-button w-full bg-white text-orange-600 hover:bg-orange-50 active:scale-98 font-extrabold py-3.5 px-4 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+            <span class="truck">🚛</span>
+            <span class="package">📦</span>
+            <span class="btn-text">⚠️ Solicitar Asistencia SOS</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Módulo de Servicios Rápidos -->
+      <section>
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-base font-bold text-slate-800">Servicios Rápidos</h3>
+          <button onclick="cambiarSeccion('sec-mapa')" class="text-xs text-orange-600 font-semibold cursor-pointer">Ver Mapa</button>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button id="btn-ducha" class="bg-white hover:border-orange-200 border border-gray-100 p-4 rounded-2xl flex flex-col items-start gap-2 shadow-sm transition text-left group">
+            <div class="text-2xl p-2 bg-blue-50 rounded-xl group-hover:scale-110 transition-transform">🚿</div>
+            <div>
+              <span class="text-sm font-bold text-slate-800 block">Reservar Ducha</span>
+              <span class="text-[11px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-1">3 paradores cerca</span>
+            </div>
+          </button>
+
+          <button id="btn-comida" class="bg-white hover:border-orange-200 border border-gray-100 p-4 rounded-2xl flex flex-col items-start gap-2 shadow-sm transition text-left group">
+            <div class="text-2xl p-2 bg-amber-50 rounded-xl group-hover:scale-110 transition-transform">🍔</div>
+            <div>
+              <span class="text-sm font-bold text-slate-800 block">Encargar Comida</span>
+              <span class="text-[11px] text-gray-500 font-medium block mt-0.5">Listo al llegar</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Chat de Soporte -->
+      <section class="bg-white border border-gray-100 rounded-3xl p-4 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-orange-500"></span> Soporte y Dador de Carga
+          </h3>
+          <span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">Base Operativa</span>
+        </div>
+
+        <div id="chat-box" class="bg-gray-50/80 border border-gray-100 rounded-2xl p-3 h-32 overflow-y-auto text-xs space-y-2 mb-3">
+          <div class="bg-white p-2.5 rounded-2xl border border-gray-100 shadow-2xs max-w-[85%] text-slate-700">
+            <strong class="text-orange-600 block text-[10px] uppercase font-bold mb-0.5">Base de Control</strong>
+            Recordá reportar cualquier demora en la aduana de paso para reprogramar cupo.
+          </div>
+        </div>
+
+        <form id="chat-form" class="flex gap-2">
+          <input id="chat-input" type="text" placeholder="Escribir novedad..." class="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500 transition" />
+          <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-sm">
+            Enviar
+          </button>
+        </form>
+      </section>
+
+      <!-- Turno de Descarga -->
+      <section class="bg-white border border-gray-100 rounded-2xl p-4 flex justify-between items-center shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-gray-100 text-slate-700 rounded-xl text-lg font-bold">📥</div>
+          <div>
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold block">Turno de Descarga</span>
+            <span class="text-xs font-bold text-slate-800">Puerto Arayas - Cupo #842</span>
+          </div>
+        </div>
+        <span class="bg-gray-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-lg border border-gray-200">
+          Confirmado
+        </span>
+      </section>
     </div>
-    <p class="text-xs text-white/90 mb-4 font-normal">Gomería, auxilio mecánico o remolque pesado con geolocalización.</p>
 
-    <!-- BOTÓN CON ESTRUCTURA PARA ANIMACIÓN -->
-    <button id="btn-sos" class="order-button w-full bg-white text-orange-600 hover:bg-orange-50 active:scale-98 font-extrabold py-3.5 px-4 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
-      <span class="truck">🚛</span>
-      <span class="package">📦</span>
-      <span class="btn-text">⚠️ Solicitar Auxilio SOS</span>
-    </button>
-  </div>
-</section>
-    <!-- Módulo de Servicios -->
-    <section>
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="text-base font-bold text-slate-800">Servicios en Ruta</h3>
-        <span class="text-xs text-orange-600 font-semibold cursor-pointer">Ver todos</span>
+    <!-- SECCIÓN 2: MAPA DE PARADORES -->
+    <div id="sec-mapa" class="section-view hidden space-y-4">
+      <div class="bg-orange-500/10 border border-orange-200 rounded-2xl p-3 text-xs text-orange-800 flex justify-between items-center">
+        <span>📍 Tramo: Ruta Nacional 14 - Km 492</span>
+        <span class="font-bold bg-white px-2 py-0.5 rounded-md border border-orange-200">GPS Activo</span>
       </div>
-      <div class="grid grid-cols-2 gap-3">
-        <!-- Servicio 1: Ducha -->
-        <button id="btn-ducha" class="bg-white hover:border-orange-200 border border-gray-100 p-4 rounded-2xl flex flex-col items-start gap-2 shadow-sm hover:shadow-md transition text-left group">
-          <div class="text-2xl p-2 bg-blue-50 rounded-xl group-hover:scale-110 transition-transform">🚿</div>
-          <div>
-            <span class="text-sm font-bold text-slate-800 block">Reservar Ducha</span>
-            <span class="text-[11px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-1">3 paradores cerca</span>
-          </div>
-        </button>
 
-        <!-- Servicio 2: Comida -->
-        <button id="btn-comida" class="bg-white hover:border-orange-200 border border-gray-100 p-4 rounded-2xl flex flex-col items-start gap-2 shadow-sm hover:shadow-md transition text-left group">
-          <div class="text-2xl p-2 bg-amber-50 rounded-xl group-hover:scale-110 transition-transform">🍔</div>
+      <h3 class="text-base font-bold text-slate-800">Paradores Cercanos</h3>
+
+      <!-- Parador 1 -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm space-y-3">
+        <div class="flex justify-between items-start">
           <div>
-            <span class="text-sm font-bold text-slate-800 block">Encargar Comida</span>
-            <span class="text-[11px] text-gray-500 font-medium block mt-0.5">Listo al llegar</span>
+            <h4 class="font-bold text-slate-800 text-sm">Parador YPF "El Cruce"</h4>
+            <span class="text-xs text-gray-400">A 12 km • Ruta 14 Km 504</span>
           </div>
+          <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-md">Abierto 24hs</span>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs text-slate-600">
+          <span class="bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">🚿 Duchas libres (4)</span>
+          <span class="bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">🅿️ Parking Vigilado</span>
+          <span class="bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">🛠️ Gomería 24hs</span>
+        </div>
+        <button onclick="notificar('📍 Ruta hacia Parador YPF enviada al GPS del camión.')" class="w-full bg-gray-900 text-white font-bold py-2 rounded-xl text-xs hover:bg-slate-800 transition">
+          Iniciar Navegación
         </button>
       </div>
-    </section>
 
-    <!-- Chat de Soporte -->
-    <section class="bg-white border border-gray-100 rounded-3xl p-4 shadow-sm">
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-orange-500"></span> Soporte y Dador de Carga
-        </h3>
-        <span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">Base Operativa</span>
+      <!-- Parador 2 -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm space-y-3">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">Estación Axion Energy "Los Pinos"</h4>
+            <span class="text-xs text-gray-400">A 38 km • Ruta 14 Km 530</span>
+          </div>
+          <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-md">Pocas duchas</span>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs text-slate-600">
+          <span class="bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">🍔 Restaurante</span>
+          <span class="bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">📶 Wi-Fi Alta Vel.</span>
+        </div>
+        <button onclick="notificar('📍 Ruta hacia Axion Energy enviada al GPS.')" class="w-full bg-gray-100 text-slate-800 font-bold py-2 rounded-xl text-xs hover:bg-gray-200 transition">
+          Iniciar Navegación
+        </button>
       </div>
+    </div>
 
-      <div id="chat-box" class="bg-gray-50/80 border border-gray-100 rounded-2xl p-3 h-32 overflow-y-auto text-xs space-y-2 mb-3">
-        <div class="bg-white p-2.5 rounded-2xl border border-gray-100 shadow-2xs max-w-[85%] text-slate-700">
-          <strong class="text-orange-600 block text-[10px] uppercase font-bold mb-0.5">Base de Control</strong>
-          Recordá reportar cualquier demora en la aduana de paso para reprogramar cupo.
+    <!-- SECCIÓN 3: RESERVAS & HISTORIAL -->
+    <div id="sec-reservas" class="section-view hidden space-y-4">
+      <h3 class="text-base font-bold text-slate-800">Mis Reservas y Turnos</h3>
+
+      <!-- Reserva Activa -->
+      <div class="bg-white border border-orange-200 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+        <div class="w-1.5 bg-orange-500 absolute left-0 top-0 bottom-0"></div>
+        <div class="pl-2 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-orange-600 uppercase">Reserva Activa</span>
+            <span class="text-[10px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded-md">Hoy - 20:30 hs</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm">Turno Ducha + Menú Camionero</h4>
+          <p class="text-xs text-gray-500">Parador YPF El Cruce • Código: #RTA-9921</p>
+          <div class="pt-2 border-t border-gray-100 flex justify-between items-center text-xs">
+            <span class="font-bold text-slate-800">$4.500 ARS</span>
+            <button onclick="notificar('🎫 Código QR de reserva generado en pantalla.')" class="text-orange-600 font-bold hover:underline">Ver Código QR</button>
+          </div>
         </div>
       </div>
 
-      <form id="chat-form" class="flex gap-2">
-        <input id="chat-input" type="text" placeholder="Escribir novedad a la base..." class="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500 focus:bg-white transition" />
-        <button type="submit" class="bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-sm">
-          Enviar
-        </button>
-      </form>
-    </section>
+      <!-- Historial -->
+      <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider pt-2">Completados Anteriormente</h4>
 
-    <!-- Turno de Descarga -->
-    <section class="bg-white border border-gray-100 rounded-2xl p-4 flex justify-between items-center shadow-sm">
-      <div class="flex items-center gap-3">
-        <div class="p-2.5 bg-gray-100 text-slate-700 rounded-xl text-lg font-bold">📥</div>
+      <div class="bg-white border border-gray-100 rounded-2xl p-3.5 shadow-sm flex justify-between items-center text-xs">
         <div>
-          <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold block">Turno de Descarga</span>
-          <span class="text-xs font-bold text-slate-800">Puerto Arayas - Cupo #842</span>
+          <span class="font-bold text-slate-800 block">Auxilio Neumático (Gomería)</span>
+          <span class="text-gray-400 text-[11px]">hace 3 días • Paso de los Libres</span>
+        </div>
+        <span class="text-emerald-600 font-bold">Completado</span>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: PERFIL Y MI UNIDAD -->
+    <div id="sec-perfil" class="section-view hidden space-y-4">
+      <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center space-y-3">
+        <div class="w-16 h-16 rounded-full bg-orange-500 text-white font-extrabold text-2xl mx-auto flex items-center justify-center border-4 border-orange-100 shadow-md">
+          OM
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-800 text-base">Oriel Miño</h3>
+          <span class="text-xs text-gray-400">Chofer de Transporte Internacional</span>
         </div>
       </div>
-      <span class="bg-gray-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-lg border border-gray-200">
-        Confirmado
-      </span>
-    </section>
+
+      <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm space-y-3 text-xs">
+        <h4 class="font-bold text-slate-800 text-sm border-b border-gray-100 pb-2">Datos del Vehículo</h4>
+        <div class="flex justify-between"><span class="text-gray-400">Unidad / Camión:</span> <span class="font-bold text-slate-800">Scania 113H 360 Topline</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Patente Tracto:</span> <span class="font-bold text-slate-800">AZW 765</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Acoplado / Semi:</span> <span class="font-bold text-slate-800">Sider 3 Ejes (AA 102 YY)</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Empresa Transportista:</span> <span class="font-bold text-slate-800">Logística del Sur S.A.</span></div>
+      </div>
+
+      <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm space-y-2 text-xs">
+        <h4 class="font-bold text-slate-800 text-sm border-b border-gray-100 pb-2">Documentación Digitalizada</h4>
+        <button onclick="notificar('📄 Carta de Porte Digital (CPD) escaneada con éxito.')" class="w-full text-left py-2 px-3 bg-gray-50 hover:bg-gray-100 rounded-xl font-medium text-slate-700 flex justify-between items-center">
+          <span>📄 Carta de Porte / Remito</span>
+          <span class="text-orange-600 font-bold">Ver PDF</span>
+        </button>
+      </div>
+    </div>
 
   </main>
 
+  <!-- MODAL SELECTOR DE EMERGENCIA SOS -->
+  <div id="modal-sos" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 space-y-4 shadow-2xl animate-slide-up">
+      <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🚨</span>
+          <div>
+            <h3 class="font-extrabold text-slate-800 text-base">Seleccionar Tipo de Auxilio</h3>
+            <span class="text-[11px] text-gray-400">Ubicación GPS actual incluida automáticamente</span>
+          </div>
+        </div>
+        <button id="btn-close-sos" class="text-gray-400 hover:text-slate-800 font-bold text-lg p-1">✕</button>
+      </div>
+
+      <p class="text-xs text-gray-500 font-medium">Seleccioná el servicio de emergencia que requerís en ruta:</p>
+
+      <!-- Opciones de Emergencia -->
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Option 1: Gomería -->
+        <button onclick="confirmarAuxilio('Gomería Pesada', '🛠️', 'Móvil de vulcanizado en camino (ETA: 25 min)')" class="bg-slate-50 hover:bg-orange-50 hover:border-orange-300 border border-gray-200 p-4 rounded-2xl flex flex-col items-center text-center gap-2 transition group">
+          <span class="text-3xl p-2 bg-white rounded-xl shadow-2xs group-hover:scale-110 transition-transform">🛠️</span>
+          <div>
+            <span class="font-bold text-xs text-slate-800 block">Gomería</span>
+            <span class="text-[10px] text-gray-400">Auxilio de neumáticos</span>
+          </div>
+        </button>
+
+        <!-- Option 2: Remolque -->
+        <button onclick="confirmarAuxilio('Remolque Pesado', '🚜', 'Grúa para pesados asignada (ETA: 40 min)')" class="bg-slate-50 hover:bg-orange-50 hover:border-orange-300 border border-gray-200 p-4 rounded-2xl flex flex-col items-center text-center gap-2 transition group">
+          <span class="text-3xl p-2 bg-white rounded-xl shadow-2xs group-hover:scale-110 transition-transform">🚜</span>
+          <div>
+            <span class="font-bold text-xs text-slate-800 block">Remolque / Grúa</span>
+            <span class="text-[10px] text-gray-400">Mecánica pesada</span>
+          </div>
+        </button>
+
+        <!-- Option 3: Ambulancia -->
+        <button onclick="confirmarAuxilio('Ambulancia / Médica', '🚑', 'Alerta prioritaria enviada a SAME/SAME-Ruta 107')" class="bg-red-50/60 hover:bg-red-100/80 border border-red-200 p-4 rounded-2xl flex flex-col items-center text-center gap-2 transition group">
+          <span class="text-3xl p-2 bg-white rounded-xl shadow-2xs group-hover:scale-110 transition-transform">🚑</span>
+          <div>
+            <span class="font-bold text-xs text-red-700 block">Ambulancia</span>
+            <span class="text-[10px] text-red-500 font-semibold">Emergencia Salud (107)</span>
+          </div>
+        </button>
+
+        <!-- Option 4: Policía -->
+        <button onclick="confirmarAuxilio('Policía / Vial', '🚓', 'Aviso enviado a Control Policial de Ruta (101)')" class="bg-blue-50/60 hover:bg-blue-100/80 border border-blue-200 p-4 rounded-2xl flex flex-col items-center text-center gap-2 transition group">
+          <span class="text-3xl p-2 bg-white rounded-xl shadow-2xs group-hover:scale-110 transition-transform">🚓</span>
+          <div>
+            <span class="font-bold text-xs text-blue-700 block">Policía / Seguridad</span>
+            <span class="text-[10px] text-blue-500 font-semibold">Siniestro / Robo (101)</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="pt-2 border-t border-gray-100 text-center">
+        <span class="text-[10px] text-gray-400">Si estás en una zona sin cobertura celular, presioná el botón de llamada por satélite de la cabina.</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Barra de Navegación Inferior (Floating Nav) -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-200/80 px-6 py-2.5 z-40 max-w-md mx-auto flex justify-between items-center">
-    <button class="flex flex-col items-center gap-1 text-orange-600 font-bold">
+    <button onclick="cambiarSeccion('sec-inicio')" id="nav-sec-inicio" class="nav-btn flex flex-col items-center gap-1 text-orange-600 font-bold">
       <span class="text-xl">🏠</span>
       <span class="text-[10px]">Inicio</span>
     </button>
-    <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-slate-700">
+    <button onclick="cambiarSeccion('sec-mapa')" id="nav-sec-mapa" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-slate-700">
       <span class="text-xl">🗺️</span>
       <span class="text-[10px]">Mapa</span>
     </button>
-    <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-slate-700">
+    <button onclick="cambiarSeccion('sec-reservas')" id="nav-sec-reservas" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-slate-700">
       <span class="text-xl">📋</span>
       <span class="text-[10px]">Reservas</span>
     </button>
-    <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-slate-700">
+    <button onclick="cambiarSeccion('sec-perfil')" id="nav-sec-perfil" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-slate-700">
       <span class="text-xl">👤</span>
       <span class="text-[10px]">Perfil</span>
     </button>
   </nav>
 
-  <!-- Notificación Flotante -->
+  <!-- Notificación Flotante Toast -->
   <div id="notification" class="hidden fixed top-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-2xl font-semibold text-xs shadow-2xl z-50 transition-all flex items-center gap-2 border border-slate-700"></div>
 
-  <!-- Vinculación del JavaScript -->
+  <!-- Script JS -->
   <script src="script.js"></script>
 </body>
 </html>
