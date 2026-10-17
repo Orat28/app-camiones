@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const profileImg = document.getElementById('profile-avatar-img');
   const profileInitials = document.getElementById('profile-avatar-initials');
 
+  // URL de tu API (Usa localhost en desarrollo, o tu URL de Render/Vercel en producción)
+  const API_URL = 'http://localhost:3000/api/chat';
+
   // Función Notificación Toast
   window.notificar = function(mensaje) {
     if (!notification) return;
@@ -92,20 +95,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // CHAT EN TIEMPO REAL
+  // CHAT EN TIEMPO REAL E INTEGRACIÓN CON BOT API
   if (chatForm) {
-    chatForm.addEventListener('submit', (e) => {
+    chatForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const texto = chatInput.value.trim();
 
       if (texto !== '') {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'bg-orange-500 text-slate-950 p-2.5 rounded-xl font-medium max-w-[85%] ml-auto text-right shadow-sm';
-        msgDiv.innerHTML = `<strong class="block text-[10px] text-slate-900 uppercase font-extrabold mb-0.5">Chofer</strong>${texto}`;
+        // 1. Renderizar mensaje del chofer
+        const msgUsuario = document.createElement('div');
+        msgUsuario.className = 'bg-orange-500 text-slate-950 p-2.5 rounded-xl font-medium max-w-[85%] ml-auto text-right shadow-sm my-1.5';
+        msgUsuario.innerHTML = `<strong class="block text-[10px] text-slate-900 uppercase font-extrabold mb-0.5">Chofer</strong>${texto}`;
+        chatBox.appendChild(msgUsuario);
 
-        chatBox.appendChild(msgDiv);
+        // Limpiar input y deshabilitar mientras espera
         chatInput.value = '';
+        chatInput.disabled = true;
         chatBox.scrollTop = chatBox.scrollHeight;
+
+        // 2. Renderizar un mensaje temporal de "pensando..."
+        const msgCargando = document.createElement('div');
+        msgCargando.className = 'bg-slate-800 text-slate-300 p-2.5 rounded-xl font-medium max-w-[85%] mr-auto text-left shadow-sm my-1.5 border border-slate-700';
+        msgCargando.innerHTML = `<strong class="block text-[10px] text-orange-400 uppercase font-extrabold mb-0.5">Soporte & Base Operativa</strong><span class="animate-pulse">Escribiendo...</span>`;
+        chatBox.appendChild(msgCargando);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        try {
+          // 3. Consultar a tu API REST de Gemini
+          const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: texto })
+          });
+
+          const data = await response.json();
+
+          // 4. Reemplazar el mensaje de carga con la respuesta real
+          if (data.reply) {
+            msgCargando.innerHTML = `<strong class="block text-[10px] text-orange-400 uppercase font-extrabold mb-0.5">Soporte & Base Operativa</strong>${data.reply.replace(/\n/g, '<br>')}`;
+          } else {
+            msgCargando.innerHTML = `<strong class="block text-[10px] text-red-400 uppercase font-extrabold mb-0.5">Soporte & Base Operativa</strong>No se pudo procesar tu novedad en este momento.`;
+          }
+        } catch (error) {
+          console.error('Error al conectar con la API:', error);
+          msgCargando.innerHTML = `<strong class="block text-[10px] text-red-400 uppercase font-extrabold mb-0.5">Soporte & Base Operativa</strong>Error de conexión con la base operativa.`;
+        } finally {
+          // Reactivar input y enfocar
+          chatInput.disabled = false;
+          chatInput.focus();
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
       }
     });
   }
